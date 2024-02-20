@@ -1,9 +1,9 @@
 import "./assets/css/App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 import { routes } from "./routes";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function App() {
   // react query stop refetch when switch browser tabs
