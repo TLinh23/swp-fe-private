@@ -93,7 +93,7 @@ function HomePageContent() {
             <button className="flex items-center gap-2 px-5 py-3 bg-transparent border border-gray-500 rounded-md">
               <p className="text-base font-bold text-black">
                 Join as Instructor
-                <span className="ml-3 text-blue-400">It's Free!</span>
+                <span className="ml-3 text-blue-400">It&apos;s Free!</span>
               </p>
             </button>
           </div>
@@ -236,7 +236,7 @@ function HomePageContent() {
             alt="zigzag-line"
           />
           <h2 className="mt-3 text-lg font-normal">
-            Let's make a quick start today
+            Let&apos;s make a quick start today
           </h2>
           <div className="mt-3 text-4xl font-semibold">
             Choose from the top visited
@@ -388,20 +388,20 @@ function ListTutorNear() {
   );
 }
 
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-    slidesToSlide: 3, // optional, default to 1.
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-    slidesToSlide: 2, // optional, default to 1.
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
-    slidesToSlide: 1, // optional, default to 1.
-  },
-};
+// const responsive = {
+//   desktop: {
+//     breakpoint: { max: 3000, min: 1024 },
+//     items: 3,
+//     slidesToSlide: 3, // optional, default to 1.
+//   },
+//   tablet: {
+//     breakpoint: { max: 1024, min: 464 },
+//     items: 2,
+//     slidesToSlide: 2, // optional, default to 1.
+//   },
+//   mobile: {
+//     breakpoint: { max: 464, min: 0 },
+//     items: 1,
+//     slidesToSlide: 1, // optional, default to 1.
+//   },
+// };
