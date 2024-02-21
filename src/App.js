@@ -3,6 +3,7 @@ import React from "react";
 
 import { routes } from "./routes";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Spinner from "./components/common/Spinner";
 
 function App() {
   // react query stop refetch when switch browser tabs
@@ -15,15 +16,18 @@ function App() {
   });
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <Routes>
-          {routes.map((route) => (
-            <Route {...route} />
-          ))}
-        </Routes>
-      </Router>
-    </QueryClientProvider>
+    <>
+      <Spinner />
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Routes>
+            {routes.map((route) => (
+              <Route {...route} />
+            ))}
+          </Routes>
+        </Router>
+      </QueryClientProvider>
+    </>
   );
 }
 
