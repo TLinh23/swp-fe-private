@@ -7,11 +7,14 @@ import PrimaryBtn from "../common/PrimaryBtn";
 import UploadImage from "../common/UploadImage";
 import useUploadImage from "src/hooks/useUploadImage";
 import FilterDropDown from "../common/FilterDropDown";
+import SecondaryBtn from "../common/SecondaryBtn";
+import { useNavigate } from "react-router-dom";
 
 function EditProfile() {
   const [staffAccountObject, setStaffAccountObject] = useState(null);
   const { imageUrlResponse, handleUploadImage, imageUpload } = useUploadImage();
   const [gender, setGender] = useState();
+  const navigate = useNavigate();
   console.log("imageUpload: ", imageUpload);
 
   return (
@@ -196,9 +199,17 @@ function EditProfile() {
             </div>
           </div>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end items-center gap-4 mt-6">
+          <SecondaryBtn
+            onClick={() => {
+              navigate("/profile");
+            }}
+            className="md:max-w-[222px]"
+          >
+            Cancel
+          </SecondaryBtn>
           <PrimaryBtn
-            className="md:max-w-[222px] mt-6"
+            className="md:max-w-[222px]"
             // onClick={() => handleChangeProfile()}
             // disabled={
             //   (staffAccountObject?.phone &&
