@@ -119,7 +119,7 @@ function ParentEditProfile() {
         <div className="flex items-center justify-end gap-4 mt-6">
           <SecondaryBtn
             onClick={() => {
-              navigate("/parent/profile");
+              navigate(-1);
             }}
             className="md:max-w-[222px]"
           >

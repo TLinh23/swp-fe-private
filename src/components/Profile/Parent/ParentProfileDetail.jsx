@@ -9,9 +9,13 @@ import SmallTitle from "src/components/common/SmallTitle";
 import Title from "src/components/common/Title";
 import AddStudentPopup from "./AddStudentPopup";
 import EditStudentPopup from "./EditStudentPopup";
+import { useAuthContext } from "src/context/AuthContext";
+import { ROLE_NAME } from "src/constants/constants";
 
-function ParentProfileDetail() {
-  const [staffAccountObject, setStaffAccountObject] = useState(null);
+function ParentProfileDetail(props) {
+  const { dataProfileDetail } = props;
+  // fill data from dataProfileDetail, which is from api
+  const { userId, roleKey } = useAuthContext();
   const [isShowPopupAddStudent, setIsShowPopupAddStudent] = useState(false);
   const [isShowPopupEditStudent, setIsShowPopupEditStudent] = useState(false);
   const [gender, setGender] = useState();
@@ -52,7 +56,7 @@ function ParentProfileDetail() {
             }
             placeholder="Enter first name"
             value={
-              staffAccountObject?.userName ? staffAccountObject?.userName : ""
+              dataProfileDetail?.userName ? dataProfileDetail?.userName : ""
             }
             readOnly
           />
@@ -73,28 +77,10 @@ function ParentProfileDetail() {
             <input
               max={new Date().toISOString().slice(0, 10)}
               value={
-                staffAccountObject?.birthDate
-                  ? format(
-                      new Date(staffAccountObject?.birthDate),
-                      "yyyy-MM-dd"
-                    )
+                dataProfileDetail?.birthDate
+                  ? format(new Date(dataProfileDetail?.birthDate), "yyyy-MM-dd")
                   : ""
               }
-              onChange={(e) => {
-                const selectedDate = e.target.value;
-                const currentDate = new Date().toISOString().slice(0, 10);
-                if (selectedDate > currentDate) {
-                  setStaffAccountObject({
-                    ...staffAccountObject,
-                    birthDate: currentDate,
-                  });
-                } else {
-                  setStaffAccountObject({
-                    ...staffAccountObject,
-                    birthDate: selectedDate,
-                  });
-                }
-              }}
               type="date"
               disabled
               className="w-full h-[46px] px-4 py-3 border rounded-md outline-none border-gray focus:border-primary hover:border-primary smooth-transform"
@@ -104,17 +90,25 @@ function ParentProfileDetail() {
             title="Phone number"
             placeholder="Enter phone number"
             type="number"
-            value={staffAccountObject?.phone ? staffAccountObject?.phone : ""}
+            value={dataProfileDetail?.phone ? dataProfileDetail?.phone : ""}
             readOnly
+            isVisible={
+              (roleKey === ROLE_NAME.PARENT &&
+                String(userId) === String(dataProfileDetail?.id)) ||
+              roleKey === ROLE_NAME.STAFF
+            }
           />
           <PrimaryInput
             title="Address detail"
             rows={4}
             placeholder="Enter address detail"
-            value={
-              staffAccountObject?.address ? staffAccountObject?.address : ""
-            }
+            value={dataProfileDetail?.address ? dataProfileDetail?.address : ""}
             readOnly
+            isVisible={
+              (roleKey === ROLE_NAME.PARENT &&
+                String(userId) === String(dataProfileDetail?.id)) ||
+              roleKey === ROLE_NAME.STAFF
+            }
           />
         </div>
         <div>
@@ -128,28 +122,41 @@ function ParentProfileDetail() {
               className="border-b border-b-gray"
             />
             <div className="flex flex-col">
-              <StudentItem handleClickEdit={handleEditStudent} />
-              <StudentItem handleClickEdit={handleEditStudent} />
-              <div
-                className="p-2 text-center cursor-pointer smooth-transform hover:underline"
-                onClick={handleClickAddMoreStudent}
-              >
-                Add more
-              </div>
+              {[1, 2].map((item) => (
+                <StudentItem
+                  key={item}
+                  handleClickEdit={handleEditStudent}
+                  roleKey={roleKey}
+                  userId={userId}
+                  dataProfileDetail={dataProfileDetail}
+                />
+              ))}
+              {roleKey === ROLE_NAME.PARENT &&
+                String(userId) === String(dataProfileDetail?.id) && (
+                  <div
+                    className="p-2 text-center cursor-pointer smooth-transform hover:underline"
+                    onClick={handleClickAddMoreStudent}
+                  >
+                    Add more
+                  </div>
+                )}
             </div>
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-8">
-        <PrimaryBtn
-          className="md:max-w-[222px]"
-          onClick={() => {
-            navigate("/parent/profile/edit");
-          }}
-        >
-          Update
-        </PrimaryBtn>
-      </div>
+      {roleKey === ROLE_NAME.PARENT &&
+        String(userId) === String(dataProfileDetail?.id) && (
+          <div className="flex justify-center mt-8">
+            <PrimaryBtn
+              className="md:max-w-[222px]"
+              onClick={() => {
+                navigate(`/profile/${dataProfileDetail?.id}/edit`);
+              }}
+            >
+              Update
+            </PrimaryBtn>
+          </div>
+        )}
       <PopupTemplate
         setShowDialog={setIsShowPopupAddStudent}
         showDialog={isShowPopupAddStudent}
@@ -170,21 +177,24 @@ function ParentProfileDetail() {
 
 export default ParentProfileDetail;
 
-function StudentItem({ handleClickEdit }) {
+function StudentItem({ handleClickEdit, roleKey, userId, dataProfileDetail }) {
   return (
     <div className="flex items-center justify-between gap-3 px-3 py-2 border-b border-b-gray">
       <div>
         <div>Huy</div>
         <div>091634237472</div>
       </div>
-      <PrimaryBtn
-        className="!w-fit !py-1"
-        onClick={() => {
-          handleClickEdit();
-        }}
-      >
-        Edit
-      </PrimaryBtn>
+      {roleKey === ROLE_NAME.PARENT &&
+        String(userId) === String(dataProfileDetail?.id) && (
+          <PrimaryBtn
+            className="!w-fit !py-1"
+            onClick={() => {
+              handleClickEdit();
+            }}
+          >
+            Edit
+          </PrimaryBtn>
+        )}
     </div>
   );
 }
