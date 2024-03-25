@@ -1,21 +1,16 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import ParentProfileDetail from "./Parent/ParentProfileDetail";
+import { useAuthContext } from "src/context/AuthContext";
 
 function ViewProfileDetail() {
-  const location = useLocation();
-  const routes = [
-    { path: "/parent", component: ParentProfileDetail },
-    { path: "/tutor", component: ParentProfileDetail },
-    { path: "/staff", component: ParentProfileDetail },
-  ];
+  const { userId, roleKey } = useAuthContext();
 
-  const matchingRoute = routes.find((route) =>
-    location.pathname.includes(route.path)
+  return (
+    <div>
+      {roleKey === "parent" && <ParentProfileDetail />}
+      {roleKey === "staff" && <div>Staff detail</div>}
+    </div>
   );
-  const Component = matchingRoute ? matchingRoute.component : null;
-
-  return <div>{Component && <Component />}</div>;
 }
 
 export default ViewProfileDetail;
